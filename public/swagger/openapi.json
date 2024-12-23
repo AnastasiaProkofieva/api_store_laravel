@@ -1,0 +1,816 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "tags": [
+        {
+            "name": "COMMON",
+            "description": "Common routes"
+        },
+        {
+            "name": "AUTH",
+            "description": "Authorization"
+        },
+        {
+            "name": "USER ORDERS",
+            "description": "User orders routes"
+        },
+        {
+            "name": "USER COMMENTS",
+            "description": "User comments routes"
+        },
+        {
+            "name": "ADMIN PRODUCTS",
+            "description": "Admin products routes"
+        }
+    ],
+    "paths": {
+        "/products": {
+            "get": {
+                "tags": [
+                    "COMMON"
+                ],
+                "summary": "Get all products",
+                "description": "Get all products",
+                "operationId": "getAllProducts",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Elements per page",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 8
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    },
+                    "401": {
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/filters": {
+            "get": {
+                "tags": [
+                    "COMMON"
+                ],
+                "summary": "Get filtered products",
+                "description": "Get filtered products",
+                "operationId": "getFilteredProducts",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Make a choice between Phones(Category:1) and Other devices(Category:2)",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "min_price",
+                        "in": "query",
+                        "description": "Enter minimum price",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "max_price",
+                        "in": "query",
+                        "description": "Enter maximum price",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Enter the device name or find technical specifications",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "string",
+                            "default": " "
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    },
+                    "401": {
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Login",
+                "description": "Login",
+                "operationId": "Login",
+                "requestBody": {
+                    "description": "Login",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Login"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                ]
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Registration",
+                "description": "Registration",
+                "operationId": "registration",
+                "requestBody": {
+                    "description": "Register",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                ]
+            }
+        },
+        "/user/comments": {
+            "get": {
+                "tags": [
+                    "USER COMMENTS"
+                ],
+                "summary": "Get all user comments",
+                "description": "Get all user comments",
+                "operationId": "getAllUserComments",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Elements per page",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 8
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    },
+                    "401": {
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    }
+                }
+            }
+
+        },
+        "/user/comments/{product_id}": {
+            "post": {
+            "tags": [
+                "USER COMMENTS"
+            ],
+            "summary": "Add new comment",
+            "description": "Add new comment",
+            "operationId": "addComment",
+            "security": [
+                {
+                    "Authorization": []
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "product_id",
+                    "in": "path",
+                    "description": "Product ID",
+                    "required": false,
+                    "explode": true,
+                    "schema": {
+                        "type": "integer",
+                        "default": 1
+                    }
+                }
+            ],
+            "requestBody": {
+                "description": "Comment",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Comment"
+                        }
+                    }
+                },
+                "required": true
+            },
+            "responses": {
+                "201": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreatedProduct"
+                            }
+                        }
+                    }
+                },
+                "422": {
+                    "description": "Invalid input"
+                }
+            }
+        }
+        },
+        "/user/comments/{id}":{
+            "delete": {
+                "tags": [
+                    "USER COMMENTS"
+                ],
+                "summary": "Delete comment",
+                "description": "Delete comment",
+                "operationId": "deleteComment",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Comment ID",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreatedProduct"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+    },
+    "/admin/products": {
+            "get": {
+                "tags": [
+                    "ADMIN PRODUCTS"
+                ],
+                "summary": "Get all products",
+                "description": "Get all products",
+                "operationId": "getAllProducts",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Elements per page",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 8
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    },
+                    "401": {
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "ADMIN PRODUCTS"
+                ],
+                "summary": "Add new product",
+                "description": "Add new product",
+                "operationId": "addProduct",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Product",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreatedProduct"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/admin/products/{id}": {
+            "put": {
+                "tags": [
+                    "ADMIN PRODUCTS"
+                ],
+                "summary": "Update product",
+                "description": "Update product",
+                "operationId": "updateProduct",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Product",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreatedProduct"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid input"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "ADMIN PRODUCTS"
+                ],
+                "summary": "Delete product",
+                "description": "Delete product",
+                "operationId": "deleteProduct",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreatedProduct"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
+        "/user/orders": {
+            "get": {
+                "tags": [
+                    "USER ORDERS"
+                ],
+                "summary": "Get user orders",
+                "description": "Get user orders",
+                "operationId": "getUserOrders",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Elements per page",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 8
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    },
+                    "401": {
+                        "description": "Unauthenticated.",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/orders/buy/{id}": {
+            "post": {
+                "tags": [
+                    "USER ORDERS"
+                ],
+                "summary": "Buy product",
+                "description": "Buy product",
+                "operationId": "buyProduct",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": false,
+                        "explode": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "required": [
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Anastasia"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "admin@admin.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "12341234"
+                    }
+                }
+            },
+            "Login": {
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "admin@admin.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "12341234"
+                    }
+                }
+            },
+            "Comment": {
+                "required": [
+
+                    "textarea"
+
+                ],
+                "type": "object",
+                "properties": {
+                    "textarea": {
+                        "type": "string",
+                        "example": "Post"
+                    }
+                }
+            },
+            "Product": {
+                "required": [
+                    "name",
+                    "description",
+                    "price",
+                    "category_id",
+                    "image"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Product name"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Product description"
+                    },
+                    "price": {
+                        "type": "integer",
+                        "example": 12.50
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "Product image"
+                    }
+                }
+            },
+            "CreatedProduct": {
+                "required": [
+                    "name",
+                    "description",
+                    "price",
+                    "category_id",
+                    "image"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Product name"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Product description"
+                    },
+                    "price": {
+                        "type": "integer",
+                        "example": 12.50
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "image"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "Authorization": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}
